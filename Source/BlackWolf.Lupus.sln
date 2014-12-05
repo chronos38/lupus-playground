@@ -32,7 +32,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gtest", "gtest\gtest.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sqlite", "sqlite\sqlite.vcxproj", "{B8F596D5-504F-4103-928C-3304F2072140}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlackWolf.Lupus.Playground.Core", "BlackWolf.Lupus.Playground.Core\BlackWolf.Lupus.Playground.Core.vcxproj", "{4117288E-3098-40DC-80DB-3A26B730FC0C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sfml-main", "sfml-main\sfml-main.vcxproj", "{BDC2DCA6-4CED-46D6-AA0E-45E921AD0F54}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlackWolf.Lupus.Core", "BlackWolf.Lupus.Core\BlackWolf.Lupus.Core.vcxproj", "{4117288E-3098-40DC-80DB-3A26B730FC0C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{42DD7832-0F96-48C8-87FD-B8132EB59ACF} = {42DD7832-0F96-48C8-87FD-B8132EB59ACF}
 		{176A203D-2C83-49AB-B7C1-C26D2B309D05} = {176A203D-2C83-49AB-B7C1-C26D2B309D05}
@@ -44,12 +46,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlackWolf.Lupus.Playground.
 		{B8F596D5-504F-4103-928C-3304F2072140} = {B8F596D5-504F-4103-928C-3304F2072140}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlackWolf.Lupus.Playground.Core.Test", "BlackWolf.Lupus.Playground.Core.Test\BlackWolf.Lupus.Playground.Core.Test.vcxproj", "{9E0FD8DE-95F8-436B-A38E-E3362745AE75}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlackWolf.Lupus.Core.Test", "BlackWolf.Lupus.Core.Test\BlackWolf.Lupus.Core.Test.vcxproj", "{9E0FD8DE-95F8-436B-A38E-E3362745AE75}"
 	ProjectSection(ProjectDependencies) = postProject
 		{4117288E-3098-40DC-80DB-3A26B730FC0C} = {4117288E-3098-40DC-80DB-3A26B730FC0C}
 	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sfml-main", "sfml-main\sfml-main.vcxproj", "{BDC2DCA6-4CED-46D6-AA0E-45E921AD0F54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +85,10 @@ Global
 		{B8F596D5-504F-4103-928C-3304F2072140}.Debug|Win32.Build.0 = Debug|Win32
 		{B8F596D5-504F-4103-928C-3304F2072140}.Release|Win32.ActiveCfg = Release|Win32
 		{B8F596D5-504F-4103-928C-3304F2072140}.Release|Win32.Build.0 = Release|Win32
+		{BDC2DCA6-4CED-46D6-AA0E-45E921AD0F54}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BDC2DCA6-4CED-46D6-AA0E-45E921AD0F54}.Debug|Win32.Build.0 = Debug|Win32
+		{BDC2DCA6-4CED-46D6-AA0E-45E921AD0F54}.Release|Win32.ActiveCfg = Release|Win32
+		{BDC2DCA6-4CED-46D6-AA0E-45E921AD0F54}.Release|Win32.Build.0 = Release|Win32
 		{4117288E-3098-40DC-80DB-3A26B730FC0C}.Debug|Win32.ActiveCfg = Debug|Win32
 		{4117288E-3098-40DC-80DB-3A26B730FC0C}.Debug|Win32.Build.0 = Debug|Win32
 		{4117288E-3098-40DC-80DB-3A26B730FC0C}.Release|Win32.ActiveCfg = Release|Win32
@@ -93,10 +97,6 @@ Global
 		{9E0FD8DE-95F8-436B-A38E-E3362745AE75}.Debug|Win32.Build.0 = Debug|Win32
 		{9E0FD8DE-95F8-436B-A38E-E3362745AE75}.Release|Win32.ActiveCfg = Release|Win32
 		{9E0FD8DE-95F8-436B-A38E-E3362745AE75}.Release|Win32.Build.0 = Release|Win32
-		{BDC2DCA6-4CED-46D6-AA0E-45E921AD0F54}.Debug|Win32.ActiveCfg = Debug|Win32
-		{BDC2DCA6-4CED-46D6-AA0E-45E921AD0F54}.Debug|Win32.Build.0 = Debug|Win32
-		{BDC2DCA6-4CED-46D6-AA0E-45E921AD0F54}.Release|Win32.ActiveCfg = Release|Win32
-		{BDC2DCA6-4CED-46D6-AA0E-45E921AD0F54}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

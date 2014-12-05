@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4117288E-3098-40DC-80DB-3A26B730FC0C}</ProjectGuid>
     <RootNamespace>BlackWolfLupusPlaygroundCore</RootNamespace>
+    <ProjectName>BlackWolf.Lupus.Core</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -58,7 +59,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\Lib;$(SolutionDir)..\Lib\$(Platform).$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>$(SolutionDir)..\Lib\$(Platform).$(Configuration)\$(TargetName).lib</ImportLibrary>
+      <AdditionalDependencies>sfml-system.lib;sfml-network.lib;sfml-audio.lib;sfml-graphics.lib;sfml-window.lib;sqlite.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>mkdir $(SolutionDir)..\Include\BlackWolf.Lupus.Core
+del $(SolutionDir)..\Include\BlackWolf.Lupus.Core\*.h
+copy *.h $(SolutionDir)..\Include\BlackWolf.Lupus.Core</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -76,14 +83,22 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)..\Lib;$(SolutionDir)..\Lib\$(Platform).$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>$(SolutionDir)..\Lib\$(Platform).$(Configuration)\$(TargetName).lib</ImportLibrary>
+      <AdditionalDependencies>sfml-system.lib;sfml-network.lib;sfml-audio.lib;sfml-graphics.lib;sfml-window.lib;sqlite.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>mkdir $(SolutionDir)..\Include\BlackWolf.Lupus.Core
+del $(SolutionDir)..\Include\BlackWolf.Lupus.Core\*.h
+copy *.h $(SolutionDir)..\Include\BlackWolf.Lupus.Core</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp" />
+    <ClInclude Include="Configuration.h" />
+    <ClInclude Include="Float.h" />
+    <ClInclude Include="Integer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Configuration.h" />
-    <ClInclude Include="Header.h" />
+    <ClCompile Include="Float.cpp" />
+    <ClCompile Include="Integer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

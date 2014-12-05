@@ -1,14 +1,9 @@
-#ifndef LUPUS_CONFIGURATION_HPP
-#define LUPUS_CONFIGURATION_HPP
-
-#ifdef NOEXCEPT
-#undef NOEXCEPT
-#endif
+#ifndef LUPUS_CONFIGURATION_H
+#define LUPUS_CONFIGURATION_H
 
 #ifdef _MSC_VER
 #pragma once
 #pragma warning(disable: 4290)
-#define NOEXCEPT throw()
 
 #ifdef LUPUS_CORE_EXPORT
 #define LUPUS_CORE_API __declspec(dllexport)
@@ -17,7 +12,6 @@
 #endif
 
 #else
-#define NOEXCEPT noexcept
 
 #ifdef LUPUS_CORE_EXPORT
 
