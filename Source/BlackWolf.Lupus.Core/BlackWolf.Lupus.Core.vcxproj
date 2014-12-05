@@ -59,7 +59,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\Lib;$(SolutionDir)..\Lib\$(Platform).$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>$(SolutionDir)..\Lib\$(Platform).$(Configuration)\$(TargetName).lib</ImportLibrary>
-      <AdditionalDependencies>sfml-system.lib;sfml-network.lib;sfml-audio.lib;sfml-graphics.lib;sfml-window.lib;sqlite.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-system.lib;sfml-network.lib;sfml-audio.lib;sfml-graphics.lib;sfml-window.lib;sqlite.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>mkdir $(SolutionDir)..\Include\BlackWolf.Lupus.Core
@@ -83,7 +83,7 @@ copy *.h $(SolutionDir)..\Include\BlackWolf.Lupus.Core</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)..\Lib;$(SolutionDir)..\Lib\$(Platform).$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>$(SolutionDir)..\Lib\$(Platform).$(Configuration)\$(TargetName).lib</ImportLibrary>
-      <AdditionalDependencies>sfml-system.lib;sfml-network.lib;sfml-audio.lib;sfml-graphics.lib;sfml-window.lib;sqlite.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-system.lib;sfml-network.lib;sfml-audio.lib;sfml-graphics.lib;sfml-window.lib;sqlite.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>mkdir $(SolutionDir)..\Include\BlackWolf.Lupus.Core

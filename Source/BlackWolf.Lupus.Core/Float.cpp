@@ -32,7 +32,7 @@
 #endif
 
 namespace sf {
-	String Float::toString(float value)
+	String toString(float value)
 	{
 		char result[BUFFER_SIZE];
 		memset(result, 0, BUFFER_SIZE);
@@ -40,7 +40,7 @@ namespace sf {
 		return result;
 	}
 
-	String Float::toString(double value)
+	String toString(double value)
 	{
 		char result[BUFFER_SIZE];
 		memset(result, 0, BUFFER_SIZE);
@@ -48,7 +48,7 @@ namespace sf {
 		return result;
 	}
 		
-	String Float::toString(long double value)
+	String toString(long double value)
 	{
 		char result[BUFFER_SIZE];
 		memset(result, 0, BUFFER_SIZE);
@@ -56,49 +56,49 @@ namespace sf {
 		return result;
 	}
 
-	bool Float::tryParse(const String& value, float& result)
+	bool tryParse(const String& value, float& result)
 	{
         return (sscanf(value.toAnsiString().c_str(), ("%f"), &result) == 1);
 	}
 
-	bool Float::tryParse(const String& value, double& result)
+	bool tryParse(const String& value, double& result)
 	{
         return (sscanf(value.toAnsiString().c_str(), ("%lf"), &result) == 1);
 	}
 
-	bool Float::tryParse(const String& value, long double& result)
+	bool tryParse(const String& value, long double& result)
 	{
         return (sscanf(value.toAnsiString().c_str(), ("%Lf"), &result) == 1);
 	}
 
-    float Float::parseFloat(const String& value)
+    float parseFloat(const String& value)
     {
         float result = 0;
 
         if (!tryParse(value, result)) {
-            throw std::invalid_argument("value");
+            return std::numeric_limits<float>::quiet_NaN();
         }
 
         return result;
     }
     
-    double Float::parseDouble(const String& value)
+    double parseDouble(const String& value)
     {
         double result = 0;
 
         if (!tryParse(value, result)) {
-            throw std::invalid_argument("value");
+            return std::numeric_limits<double>::quiet_NaN();
         }
 
         return result;
     }
     
-    long double Float::parseLongDouble(const String& value)
+    long double parseLongDouble(const String& value)
     {
         long double result = 0;
 
         if (!tryParse(value, result)) {
-            throw std::invalid_argument("value");
+            return std::numeric_limits<long double>::quiet_NaN();
         }
 
         return result;

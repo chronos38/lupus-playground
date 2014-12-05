@@ -30,46 +30,41 @@
 #include <SFML/System/String.hpp>
 
 namespace sf {
-	//! This class stores conversion methods for floating point numbers.
-    class LUPUS_CORE_API Float
-	{
-	public:
-		/**
-		 * Converts a single precision floating point number to sf::String.
-		 *
-		 * \param[in] f Single precision floating point number.
-		 * \returns String representation for floating point number.
-		 */
-		static String toString(float f);
-		/// \sa Float::toString(float)
-		static String toString(double d);
-		/// \sa Float::toString(float)
-        static String toString(long double r);
-		/**
-		 * Tries to convert a string to a single precision floating point number.
-		 *
-         * \param[in] value String to parse the value.
-		 * \param[out] result Variable to store the result.
-		 * \returns true if successful, otherwise false.
-		 */
-        static bool tryParse(const String& value, float& result);
-		/// \sa Float::tryParse(const String&, float&)
-        static bool tryParse(const String& value, double& result);
-		/// \sa Float::tryParse(const String&, float&)
-        static bool tryParse(const String& value, long double& result);
-        /**
-         * Parse a string and return the result as single precision floating point number.
-         * If this method fails, it throws an std::invalid_argument exception.
-         *
-         * \param[in] value String to parse the value.
-         * \returns Parsed value.
-         */
-        static float parseFloat(const String& value);
-        /// \sa Float::parseFloat(const String&)
-        static double parseDouble(const String& value);
-        /// \sa Float::parseFloat(const String&)
-        static long double parseLongDouble(const String& value);
-	};
+	/*!
+	 * Converts a single precision floating point number to sf::String.
+	 *
+	 * \param[in] f Single precision floating point number.
+	 * \returns String representation for floating point number.
+	 */
+	LUPUS_CORE_API String toString(float f);
+	/// \sa Float::toString(float)
+	LUPUS_CORE_API String toString(double d);
+	/// \sa Float::toString(float)
+    LUPUS_CORE_API String toString(long double r);
+	/*!
+	 * Tries to convert a string to a single precision floating point number.
+	 *
+     * \param[in] value String to parse the value.
+	 * \param[out] result Variable to store the result.
+	 * \returns true if successful, otherwise false.
+	 */
+    LUPUS_CORE_API bool tryParse(const String& value, float& result);
+	/// \sa Float::tryParse(const String&, float&)
+    LUPUS_CORE_API bool tryParse(const String& value, double& result);
+	/// \sa Float::tryParse(const String&, float&)
+    LUPUS_CORE_API bool tryParse(const String& value, long double& result);
+    /*!
+     * Parse a string and return the result as single precision floating point number.
+     * If this method fails, it returns NaN.
+     *
+     * \param[in] value String to parse the value.
+     * \returns Parsed value.
+     */
+    LUPUS_CORE_API float parseFloat(const String& value);
+    /// \sa Float::parseFloat(const String&)
+    LUPUS_CORE_API double parseDouble(const String& value);
+    /// \sa Float::parseFloat(const String&)
+    LUPUS_CORE_API long double parseLongDouble(const String& value);
 }
 
 #endif

@@ -9,7 +9,7 @@ TEST(Float, toStringFloat)
     const float f = 123.456f;
 
     // Act
-    auto string = Float::toString(f);
+    auto string = toString(f);
 
     // Assert
     ASSERT_EQ("123.456001", string.toAnsiString());
@@ -21,7 +21,7 @@ TEST(Float, toStringDouble)
     const double f = 123.456;
 
     // Act
-    auto string = Float::toString(f);
+    auto string = toString(f);
 
     // Assert
     ASSERT_EQ("123.456000", string.toAnsiString());
@@ -33,7 +33,7 @@ TEST(Float, toStringLongDouble)
     const long double f = 123.456;
 
     // Act
-    auto string = Float::toString(f);
+    auto string = toString(f);
 
     // Assert
     ASSERT_EQ("123.456000", string.toAnsiString());
@@ -46,7 +46,7 @@ TEST(Float, tryParseFloat)
     float f = 0;
 
     // Act
-    auto result = Float::tryParse(value, f);
+    auto result = tryParse(value, f);
 
     // Assert
     ASSERT_TRUE(result);
@@ -60,7 +60,7 @@ TEST(Float, tryParseDouble)
     double f = 0;
 
     // Act
-    auto result = Float::tryParse(value, f);
+    auto result = tryParse(value, f);
 
     // Assert
     ASSERT_TRUE(result);
@@ -74,7 +74,7 @@ TEST(Float, tryParseLongDouble)
     long double f = 0;
 
     // Act
-    auto result = Float::tryParse(value, f);
+    auto result = tryParse(value, f);
 
     // Assert
     ASSERT_TRUE(result);
@@ -84,5 +84,5 @@ TEST(Float, tryParseLongDouble)
 TEST(Float, tryParseError)
 {
     float i = 0;
-    ASSERT_FALSE(Float::tryParse("zzzzzz", i));
+    ASSERT_FALSE(tryParse("zzzzzz", i));
 }

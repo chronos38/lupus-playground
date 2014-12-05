@@ -26,13 +26,28 @@
 #include <exception>
 
 #define BUFFER_SIZE 64
+
 #ifdef _MSC_VER
+#include <WinSock2.h>
 #define snprintf _snprintf_s
 #define sscanf sscanf_s
+#else
+#include <arpa/inet.h>
+#if defined(__linux__)
+#include <endian.h>
+#elif defined(__FreeBSD__) || defined(__NetBSD__)
+#include <sys/endian.h>
+#elif defined(__OpenBSD__)
+#define be16toh(x) betoh16(x)
+#define be32toh(x) betoh32(x)
+#define be64toh(x) betoh64(x)
+#endif
+#define ntohll be64toh
+#define htonll htobe64
 #endif
 
 namespace sf {
-    String Integer::toString(signed char value, IntegerBase base)
+    String toString(signed char value, IntegerBase base)
     {
         char result[BUFFER_SIZE];
         memset(result, 0, BUFFER_SIZE);
@@ -51,7 +66,7 @@ namespace sf {
         return result;
     }
 
-    String Integer::toString(short value, IntegerBase base)
+    String toString(short value, IntegerBase base)
     {
         char result[BUFFER_SIZE];
         memset(result, 0, BUFFER_SIZE);
@@ -70,7 +85,7 @@ namespace sf {
         return result;
     }
 
-    String Integer::toString(int value, IntegerBase base)
+    String toString(int value, IntegerBase base)
     {
         char result[BUFFER_SIZE];
         memset(result, 0, BUFFER_SIZE);
@@ -89,7 +104,7 @@ namespace sf {
         return result;
     }
 
-    String Integer::toString(long value, IntegerBase base)
+    String toString(long value, IntegerBase base)
     {
         char result[BUFFER_SIZE];
         memset(result, 0, BUFFER_SIZE);
@@ -108,7 +123,7 @@ namespace sf {
         return result;
     }
 
-    String Integer::toString(long long value, IntegerBase base)
+    String toString(long long value, IntegerBase base)
     {
         char result[BUFFER_SIZE];
         memset(result, 0, BUFFER_SIZE);
@@ -127,7 +142,7 @@ namespace sf {
         return result;
     }
 
-    String Integer::toString(unsigned char value, IntegerBase base)
+    String toString(unsigned char value, IntegerBase base)
     {
         char result[BUFFER_SIZE];
         memset(result, 0, BUFFER_SIZE);
@@ -146,7 +161,7 @@ namespace sf {
         return result;
     }
 
-    String Integer::toString(unsigned short value, IntegerBase base)
+    String toString(unsigned short value, IntegerBase base)
     {
         char result[BUFFER_SIZE];
         memset(result, 0, BUFFER_SIZE);
@@ -165,7 +180,7 @@ namespace sf {
         return result;
     }
 
-    String Integer::toString(unsigned int value, IntegerBase base)
+    String toString(unsigned int value, IntegerBase base)
     {
         char result[BUFFER_SIZE];
         memset(result, 0, BUFFER_SIZE);
@@ -184,7 +199,7 @@ namespace sf {
         return result;
     }
 
-    String Integer::toString(unsigned long value, IntegerBase base)
+    String toString(unsigned long value, IntegerBase base)
     {
         char result[BUFFER_SIZE];
         memset(result, 0, BUFFER_SIZE);
@@ -203,7 +218,7 @@ namespace sf {
         return result;
     }
 
-    String Integer::toString(unsigned long long value, IntegerBase base)
+    String toString(unsigned long long value, IntegerBase base)
     {
         char result[BUFFER_SIZE];
         memset(result, 0, BUFFER_SIZE);
@@ -222,7 +237,7 @@ namespace sf {
         return result;
     }
 
-    bool Integer::tryParse(const String& value, signed char& result, IntegerBase base)
+    bool tryParse(const String& value, signed char& result, IntegerBase base)
     {
         switch (base) {
             case IntegerBase::Decimal:
@@ -235,7 +250,7 @@ namespace sf {
         return false;
     }
 
-    bool Integer::tryParse(const String& value, short& result, IntegerBase base)
+    bool tryParse(const String& value, short& result, IntegerBase base)
     {
         switch (base) {
             case IntegerBase::Decimal:
@@ -248,7 +263,7 @@ namespace sf {
         return false;
     }
 
-    bool Integer::tryParse(const String& value, int& result, IntegerBase base)
+    bool tryParse(const String& value, int& result, IntegerBase base)
     {
         switch (base) {
             case IntegerBase::Decimal:
@@ -261,7 +276,7 @@ namespace sf {
         return false;
     }
 
-    bool Integer::tryParse(const String& value, long& result, IntegerBase base)
+    bool tryParse(const String& value, long& result, IntegerBase base)
     {
         switch (base) {
             case IntegerBase::Decimal:
@@ -274,7 +289,7 @@ namespace sf {
         return false;
     }
 
-    bool Integer::tryParse(const String& value, long long& result, IntegerBase base)
+    bool tryParse(const String& value, long long& result, IntegerBase base)
     {
         switch (base) {
             case IntegerBase::Decimal:
@@ -287,7 +302,7 @@ namespace sf {
         return false;
     }
 
-    bool Integer::tryParse(const String& value, unsigned char& result, IntegerBase base)
+    bool tryParse(const String& value, unsigned char& result, IntegerBase base)
     {
         switch (base) {
             case IntegerBase::Decimal:
@@ -300,7 +315,7 @@ namespace sf {
         return false;
     }
 
-    bool Integer::tryParse(const String& value, unsigned short& result, IntegerBase base)
+    bool tryParse(const String& value, unsigned short& result, IntegerBase base)
     {
         switch (base) {
             case IntegerBase::Decimal:
@@ -313,7 +328,7 @@ namespace sf {
         return false;
     }
 
-    bool Integer::tryParse(const String& value, unsigned int& result, IntegerBase base)
+    bool tryParse(const String& value, unsigned int& result, IntegerBase base)
     {
         switch (base) {
             case IntegerBase::Decimal:
@@ -326,7 +341,7 @@ namespace sf {
         return false;
     }
 
-    bool Integer::tryParse(const String& value, unsigned long& result, IntegerBase base)
+    bool tryParse(const String& value, unsigned long& result, IntegerBase base)
     {
         switch (base) {
             case IntegerBase::Decimal:
@@ -339,7 +354,7 @@ namespace sf {
         return false;
     }
 
-    bool Integer::tryParse(const String& value, unsigned long long& result, IntegerBase base)
+    bool tryParse(const String& value, unsigned long long& result, IntegerBase base)
     {
         switch (base) {
             case IntegerBase::Decimal:
@@ -352,113 +367,143 @@ namespace sf {
         return false;
     }
 
-    signed char Integer::parseByte(const String& value, IntegerBase base)
+    signed char parseByte(const String& value, IntegerBase base)
     {
         signed char result = 0;
 
         if (!tryParse(value, result, base)) {
-            throw std::invalid_argument("value");
+            return std::numeric_limits<signed char>::quiet_NaN();
         }
 
         return result;
     }
 
-    short Integer::parseShort(const String& value, IntegerBase base)
+    short parseShort(const String& value, IntegerBase base)
     {
         short result = 0;
 
         if (!tryParse(value, result, base)) {
-            throw std::invalid_argument("value");
+            return std::numeric_limits<short>::quiet_NaN();
         }
 
         return result;
     }
 
-    int Integer::parseInt(const String& value, IntegerBase base)
+    int parseInt(const String& value, IntegerBase base)
     {
         int result = 0;
 
         if (!tryParse(value, result, base)) {
-            throw std::invalid_argument("value");
+            return std::numeric_limits<int>::quiet_NaN();
         }
 
         return result;
     }
 
-    long Integer::parseLong(const String& value, IntegerBase base)
+    long parseLong(const String& value, IntegerBase base)
     {
         long result = 0;
 
         if (!tryParse(value, result, base)) {
-            throw std::invalid_argument("value");
+            return std::numeric_limits<long>::quiet_NaN();
         }
 
         return result;
     }
 
-    long long Integer::parseLongLong(const String& value, IntegerBase base)
+    long long parseLongLong(const String& value, IntegerBase base)
     {
         long long result = 0;
 
         if (!tryParse(value, result, base)) {
-            throw std::invalid_argument("value");
+            return std::numeric_limits<long long>::quiet_NaN();
         }
 
         return result;
     }
 
-    unsigned char Integer::parseUByte(const String& value, IntegerBase base)
+    unsigned char parseUByte(const String& value, IntegerBase base)
     {
         unsigned char result = 0;
 
         if (!tryParse(value, result, base)) {
-            throw std::invalid_argument("value");
+            return std::numeric_limits<unsigned char>::quiet_NaN();
         }
 
         return result;
     }
 
-    unsigned short Integer::parseUShort(const String& value, IntegerBase base)
+    unsigned short parseUShort(const String& value, IntegerBase base)
     {
         unsigned short result = 0;
 
         if (!tryParse(value, result, base)) {
-            throw std::invalid_argument("value");
+            return std::numeric_limits<unsigned short>::quiet_NaN();
         }
 
         return result;
     }
 
-    unsigned int Integer::parseUInt(const String& value, IntegerBase base)
+    unsigned int parseUInt(const String& value, IntegerBase base)
     {
         unsigned int result = 0;
 
         if (!tryParse(value, result, base)) {
-            throw std::invalid_argument("value");
+            return std::numeric_limits<unsigned int>::quiet_NaN();
         }
 
         return result;
     }
 
-    unsigned long Integer::parseULong(const String& value, IntegerBase base)
+    unsigned long parseULong(const String& value, IntegerBase base)
     {
         unsigned long result = 0;
 
         if (!tryParse(value, result, base)) {
-            throw std::invalid_argument("value");
+            return std::numeric_limits<unsigned long>::quiet_NaN();
         }
 
         return result;
     }
 
-    unsigned long long Integer::parseULongLong(const String& value, IntegerBase base)
+    unsigned long long parseULongLong(const String& value, IntegerBase base)
     {
         unsigned long long result = 0;
 
         if (!tryParse(value, result, base)) {
-            throw std::invalid_argument("value");
+            return std::numeric_limits<unsigned long long>::quiet_NaN();
         }
 
         return result;
+    }
+
+    uint16_t toBigEndian(uint16_t host)
+    {
+        return htons(host);
+    }
+
+    uint32_t toBigEndian(uint32_t host)
+    {
+        return htonl(host);
+    }
+
+    uint64_t toBigEndian(uint64_t host)
+    {
+        return htonll(host);
+    }
+
+    uint16_t toLittleEndian(uint16_t network)
+    {
+        return ntohs(network);
+    }
+
+    uint32_t toLittleEndian(uint32_t network)
+    {
+        return ntohl(network);
+    }
+
+    uint64_t toLittleEndian(uint64_t network)
+    {
+        return ntohll(network);
     }
 }
