@@ -63,27 +63,34 @@ namespace sf {
         Date(Int32 year, Int32 month, Int32 day, Int32 hour, Int32 minute, Int32 second, DateKind kind);
         ~Date() = default;
 
-        virtual Int64 getTicks() const;
-        virtual Int32 getYear() const;
-        virtual Int32 getMonth() const;
-        virtual Int32 getDay() const;
-        virtual Int32 getHour() const;
-        virtual Int32 getMinute() const;
-        virtual Int32 getSecond() const;
-        virtual WeekDay getDayOfWeek() const;
-        virtual Int32 getDayOfYear() const;
-        virtual Time getTimeOfDay() const;
+        Int64 getTicks() const;
+        void setTicks(Int64 value);
+        Int32 getYear() const;
+        void setYear(Int32 value);
+        Int32 getMonth() const;
+        void setMonth(Int32 value);
+        Int32 getDay() const;
+        void setDay(Int32 day);
+        Int32 getHour() const;
+        void setHour(Int32 hour);
+        Int32 getMinute() const;
+        void setMinute(Int32 minute);
+        Int32 getSecond() const;
+        void setSecond(Int32 second);
+        WeekDay getDayOfWeek() const;
+        Int32 getDayOfYear() const;
+        Time getTimeOfDay() const;
 
-        virtual Date add(const Time& value) const;
-        virtual Date addTicks(Int64 value) const;
-        virtual Date addYears(Int32 value) const;
-        virtual Date addMonths(Int32 value) const;
-        virtual Date addDays(double value) const;
-        virtual Date addHours(double value) const;
-        virtual Date addMinutes(double value) const;
-        virtual Date addSeconds(double value) const;
-        virtual Date subtract(const Time& value) const;
-        virtual Time subtract(const Date& value) const;
+        Date add(const Time& value) const;
+        Date addTicks(Int64 value) const;
+        Date addYears(Int32 value) const;
+        Date addMonths(Int32 value) const;
+        Date addDays(double value) const;
+        Date addHours(double value) const;
+        Date addMinutes(double value) const;
+        Date addSeconds(double value) const;
+        Date subtract(const Time& value) const;
+        Time subtract(const Date& value) const;
 
         Date& operator=(const Date&) = default;
         Date& operator=(Date&&);
@@ -100,8 +107,8 @@ namespace sf {
         Date& operator+=(const Time& value);
         Date& operator-=(const Time& value);
 
-        virtual String toString() const;
-        virtual String toString(const String& format) const;
+        String toString() const;
+        String toString(const String& format) const;
 
         static Date Now();
         static Date UtcNow();

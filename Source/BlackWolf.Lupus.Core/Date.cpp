@@ -104,34 +104,75 @@ namespace sf {
         return static_cast<Int64>(mktime(&mTime));
     }
 
+    void Date::setTicks(Int64 value)
+    {
+        localtime_s(&mTime, (time_t*)&value);
+    }
+
     Int32 Date::getYear() const
     {
         return mTime.tm_year + 1900;
+    }
+
+    void Date::setYear(Int32 value)
+    {
+        mTime.tm_year = value - 1900;
+        mktime(&mTime);
     }
     
     Int32 Date::getMonth() const
     {
         return mTime.tm_mon + 1;
     }
+
+    void Date::setMonth(Int32 value)
+    {
+        mTime.tm_mon = value - 1;
+        mktime(&mTime);
+    }
     
     Int32 Date::getDay() const
     {
         return mTime.tm_mday;
+    }
+
+    void Date::setDay(Int32 value)
+    {
+        mTime.tm_mday = value;
+        mktime(&mTime);
     }
     
     Int32 Date::getHour() const
     {
         return mTime.tm_hour;
     }
+
+    void Date::setHour(Int32 value)
+    {
+        mTime.tm_hour = value;
+        mktime(&mTime);
+    }
     
     Int32 Date::getMinute() const
     {
         return mTime.tm_min;
     }
+
+    void Date::setMinute(Int32 value)
+    {
+        mTime.tm_min = value;
+        mktime(&mTime);
+    }
     
     Int32 Date::getSecond() const
     {
         return mTime.tm_sec;
+    }
+
+    void Date::setSecond(Int32 value)
+    {
+        mTime.tm_sec = value;
+        mktime(&mTime);
     }
     
     WeekDay Date::getDayOfWeek() const
