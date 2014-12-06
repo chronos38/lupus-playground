@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "Integer.h"
+#include "Numeric.h"
 #include <cstdio>
 #include <cstring>
 #include <exception>
@@ -47,19 +47,91 @@
 #endif
 
 namespace sf {
+    String toString(float value)
+    {
+        char result[BUFFER_SIZE];
+        memset(result, 0, BUFFER_SIZE);
+        snprintf(result, BUFFER_SIZE, ("%f"), value);
+        return result;
+    }
+
+    String toString(double value)
+    {
+        char result[BUFFER_SIZE];
+        memset(result, 0, BUFFER_SIZE);
+        snprintf(result, BUFFER_SIZE, ("%lf"), value);
+        return result;
+    }
+
+    String toString(long double value)
+    {
+        char result[BUFFER_SIZE];
+        memset(result, 0, BUFFER_SIZE);
+        snprintf(result, BUFFER_SIZE, ("%Lf"), value);
+        return result;
+    }
+
+    bool tryParse(const String& value, float& result)
+    {
+        return (sscanf(value.toAnsiString().c_str(), ("%f"), &result) == 1);
+    }
+
+    bool tryParse(const String& value, double& result)
+    {
+        return (sscanf(value.toAnsiString().c_str(), ("%lf"), &result) == 1);
+    }
+
+    bool tryParse(const String& value, long double& result)
+    {
+        return (sscanf(value.toAnsiString().c_str(), ("%Lf"), &result) == 1);
+    }
+
+    float parseFloat(const String& value)
+    {
+        float result = 0;
+
+        if (!tryParse(value, result)) {
+            return std::numeric_limits<float>::quiet_NaN();
+        }
+
+        return result;
+    }
+
+    double parseDouble(const String& value)
+    {
+        double result = 0;
+
+        if (!tryParse(value, result)) {
+            return std::numeric_limits<double>::quiet_NaN();
+        }
+
+        return result;
+    }
+
+    long double parseLongDouble(const String& value)
+    {
+        long double result = 0;
+
+        if (!tryParse(value, result)) {
+            return std::numeric_limits<long double>::quiet_NaN();
+        }
+
+        return result;
+    }
+
     String toString(signed char value, IntegerBase base)
     {
         char result[BUFFER_SIZE];
         memset(result, 0, BUFFER_SIZE);
 
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 snprintf(result, BUFFER_SIZE, ("%hhd"), value);
                 break;
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 snprintf(result, BUFFER_SIZE, ("%hhx"), value);
                 break;
-            case IntegerBase::Octal:
+            case Octal:
                 snprintf(result, BUFFER_SIZE, ("%hho"), value);
                 break;
         }
@@ -72,13 +144,13 @@ namespace sf {
         memset(result, 0, BUFFER_SIZE);
 
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 snprintf(result, BUFFER_SIZE, ("%hd"), value);
                 break;
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 snprintf(result, BUFFER_SIZE, ("%hx"), value);
                 break;
-            case IntegerBase::Octal:
+            case Octal:
                 snprintf(result, BUFFER_SIZE, ("%ho"), value);
                 break;
         }
@@ -91,13 +163,13 @@ namespace sf {
         memset(result, 0, BUFFER_SIZE);
 
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 snprintf(result, BUFFER_SIZE, ("%d"), value);
                 break;
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 snprintf(result, BUFFER_SIZE, ("%x"), value);
                 break;
-            case IntegerBase::Octal:
+            case Octal:
                 snprintf(result, BUFFER_SIZE, ("%o"), value);
                 break;
         }
@@ -110,13 +182,13 @@ namespace sf {
         memset(result, 0, BUFFER_SIZE);
 
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 snprintf(result, BUFFER_SIZE, ("%ld"), value);
                 break;
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 snprintf(result, BUFFER_SIZE, ("%lx"), value);
                 break;
-            case IntegerBase::Octal:
+            case Octal:
                 snprintf(result, BUFFER_SIZE, ("%lo"), value);
                 break;
         }
@@ -129,13 +201,13 @@ namespace sf {
         memset(result, 0, BUFFER_SIZE);
 
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 snprintf(result, BUFFER_SIZE, ("%lld"), value);
                 break;
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 snprintf(result, BUFFER_SIZE, ("%llx"), value);
                 break;
-            case IntegerBase::Octal:
+            case Octal:
                 snprintf(result, BUFFER_SIZE, ("%llo"), value);
                 break;
         }
@@ -148,13 +220,13 @@ namespace sf {
         memset(result, 0, BUFFER_SIZE);
 
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 snprintf(result, BUFFER_SIZE, ("%hhu"), value);
                 break;
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 snprintf(result, BUFFER_SIZE, ("%hhx"), value);
                 break;
-            case IntegerBase::Octal:
+            case Octal:
                 snprintf(result, BUFFER_SIZE, ("%hho"), value);
                 break;
         }
@@ -167,13 +239,13 @@ namespace sf {
         memset(result, 0, BUFFER_SIZE);
 
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 snprintf(result, BUFFER_SIZE, ("%hu"), value);
                 break;
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 snprintf(result, BUFFER_SIZE, ("%hx"), value);
                 break;
-            case IntegerBase::Octal:
+            case Octal:
                 snprintf(result, BUFFER_SIZE, ("%ho"), value);
                 break;
         }
@@ -186,13 +258,13 @@ namespace sf {
         memset(result, 0, BUFFER_SIZE);
 
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 snprintf(result, BUFFER_SIZE, ("%u"), value);
                 break;
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 snprintf(result, BUFFER_SIZE, ("%x"), value);
                 break;
-            case IntegerBase::Octal:
+            case Octal:
                 snprintf(result, BUFFER_SIZE, ("%o"), value);
                 break;
         }
@@ -205,13 +277,13 @@ namespace sf {
         memset(result, 0, BUFFER_SIZE);
 
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 snprintf(result, BUFFER_SIZE, ("%lu"), value);
                 break;
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 snprintf(result, BUFFER_SIZE, ("%lx"), value);
                 break;
-            case IntegerBase::Octal:
+            case Octal:
                 snprintf(result, BUFFER_SIZE, ("%lo"), value);
                 break;
         }
@@ -224,13 +296,13 @@ namespace sf {
         memset(result, 0, BUFFER_SIZE);
 
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 snprintf(result, BUFFER_SIZE, ("%llu"), value);
                 break;
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 snprintf(result, BUFFER_SIZE, ("%llx"), value);
                 break;
-            case IntegerBase::Octal:
+            case Octal:
                 snprintf(result, BUFFER_SIZE, ("%llo"), value);
                 break;
         }
@@ -240,11 +312,11 @@ namespace sf {
     bool tryParse(const String& value, signed char& result, IntegerBase base)
     {
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%hhd"), &result) == 1);
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%hhx"), &result) == 1);
-            case IntegerBase::Octal:
+            case Octal:
                 return (sscanf(value.toAnsiString().c_str(), ("%hho"), &result) == 1);
         }
         return false;
@@ -253,11 +325,11 @@ namespace sf {
     bool tryParse(const String& value, short& result, IntegerBase base)
     {
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%hd"), &result) == 1);
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%hx"), &result) == 1);
-            case IntegerBase::Octal:
+            case Octal:
                 return (sscanf(value.toAnsiString().c_str(), ("%ho"), &result) == 1);
         }
         return false;
@@ -266,11 +338,11 @@ namespace sf {
     bool tryParse(const String& value, int& result, IntegerBase base)
     {
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%d"), &result) == 1);
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%x"), &result) == 1);
-            case IntegerBase::Octal:
+            case Octal:
                 return (sscanf(value.toAnsiString().c_str(), ("%o"), &result) == 1);
         }
         return false;
@@ -279,11 +351,11 @@ namespace sf {
     bool tryParse(const String& value, long& result, IntegerBase base)
     {
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%ld"), &result) == 1);
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%lx"), &result) == 1);
-            case IntegerBase::Octal:
+            case Octal:
                 return (sscanf(value.toAnsiString().c_str(), ("%lo"), &result) == 1);
         }
         return false;
@@ -292,11 +364,11 @@ namespace sf {
     bool tryParse(const String& value, long long& result, IntegerBase base)
     {
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%lld"), &result) == 1);
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%llx"), &result) == 1);
-            case IntegerBase::Octal:
+            case Octal:
                 return (sscanf(value.toAnsiString().c_str(), ("%llo"), &result) == 1);
         }
         return false;
@@ -305,11 +377,11 @@ namespace sf {
     bool tryParse(const String& value, unsigned char& result, IntegerBase base)
     {
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%hhu"), &result) == 1);
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%hhx"), &result) == 1);
-            case IntegerBase::Octal:
+            case Octal:
                 return (sscanf(value.toAnsiString().c_str(), ("%hho"), &result) == 1);
         }
         return false;
@@ -318,11 +390,11 @@ namespace sf {
     bool tryParse(const String& value, unsigned short& result, IntegerBase base)
     {
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%hu"), &result) == 1);
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%hx"), &result) == 1);
-            case IntegerBase::Octal:
+            case Octal:
                 return (sscanf(value.toAnsiString().c_str(), ("%ho"), &result) == 1);
         }
         return false;
@@ -331,11 +403,11 @@ namespace sf {
     bool tryParse(const String& value, unsigned int& result, IntegerBase base)
     {
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%u"), &result) == 1);
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%x"), &result) == 1);
-            case IntegerBase::Octal:
+            case Octal:
                 return (sscanf(value.toAnsiString().c_str(), ("%o"), &result) == 1);
         }
         return false;
@@ -344,11 +416,11 @@ namespace sf {
     bool tryParse(const String& value, unsigned long& result, IntegerBase base)
     {
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%lu"), &result) == 1);
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%lx"), &result) == 1);
-            case IntegerBase::Octal:
+            case Octal:
                 return (sscanf(value.toAnsiString().c_str(), ("%lo"), &result) == 1);
         }
         return false;
@@ -357,11 +429,11 @@ namespace sf {
     bool tryParse(const String& value, unsigned long long& result, IntegerBase base)
     {
         switch (base) {
-            case IntegerBase::Decimal:
+            case Decimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%llu"), &result) == 1);
-            case IntegerBase::Hexadecimal:
+            case Hexadecimal:
                 return (sscanf(value.toAnsiString().c_str(), ("%llx"), &result) == 1);
-            case IntegerBase::Octal:
+            case Octal:
                 return (sscanf(value.toAnsiString().c_str(), ("%llo"), &result) == 1);
         }
         return false;
@@ -422,7 +494,7 @@ namespace sf {
         return result;
     }
 
-    unsigned char parseUByte(const String& value, IntegerBase base)
+    unsigned char parseUnsignedByte(const String& value, IntegerBase base)
     {
         unsigned char result = 0;
 
@@ -433,7 +505,7 @@ namespace sf {
         return result;
     }
 
-    unsigned short parseUShort(const String& value, IntegerBase base)
+    unsigned short parseUnsignedShort(const String& value, IntegerBase base)
     {
         unsigned short result = 0;
 
@@ -444,7 +516,7 @@ namespace sf {
         return result;
     }
 
-    unsigned int parseUInt(const String& value, IntegerBase base)
+    unsigned int parseUnsignedInt(const String& value, IntegerBase base)
     {
         unsigned int result = 0;
 
@@ -455,7 +527,7 @@ namespace sf {
         return result;
     }
 
-    unsigned long parseULong(const String& value, IntegerBase base)
+    unsigned long parseUnsignedLong(const String& value, IntegerBase base)
     {
         unsigned long result = 0;
 
@@ -466,7 +538,7 @@ namespace sf {
         return result;
     }
 
-    unsigned long long parseULongLong(const String& value, IntegerBase base)
+    unsigned long long parseUnsignedLongLong(const String& value, IntegerBase base)
     {
         unsigned long long result = 0;
 
@@ -477,32 +549,32 @@ namespace sf {
         return result;
     }
 
-    uint16_t toBigEndian(uint16_t host)
+    Uint16 toBigEndian(Uint16 host)
     {
         return htons(host);
     }
 
-    uint32_t toBigEndian(uint32_t host)
+    Uint32 toBigEndian(Uint32 host)
     {
         return htonl(host);
     }
 
-    uint64_t toBigEndian(uint64_t host)
+    Uint64 toBigEndian(Uint64 host)
     {
         return htonll(host);
     }
 
-    uint16_t toLittleEndian(uint16_t network)
+    Uint16 toLittleEndian(Uint16 network)
     {
         return ntohs(network);
     }
 
-    uint32_t toLittleEndian(uint32_t network)
+    Uint32 toLittleEndian(Uint32 network)
     {
         return ntohl(network);
     }
 
-    uint64_t toLittleEndian(uint64_t network)
+    Uint64 toLittleEndian(Uint64 network)
     {
         return ntohll(network);
     }
