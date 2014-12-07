@@ -24,8 +24,6 @@
 #define LUPUS_DATE_H
 #ifdef _MSC_VER
 #pragma once
-#pragma warning(push)
-#pragma warning(disable: 4251)
 #endif
 
 #include "Configuration.h"
@@ -53,6 +51,7 @@ namespace sf {
     class LUPUS_CORE_API Date
     {
     public:
+        Date();
         Date(const Date&) = default;
         Date(Date&&);
         Date(Int64 ticks);
@@ -113,7 +112,6 @@ namespace sf {
         static Date UtcNow();
 
     private:
-        Date() = default;
         Date(std::tm&&);
         mutable std::tm mTime;
     };
@@ -123,7 +121,4 @@ namespace sf {
     LUPUS_CORE_API String toString(const Date&);
 }
 
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif
 #endif

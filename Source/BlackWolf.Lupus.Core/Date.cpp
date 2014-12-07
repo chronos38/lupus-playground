@@ -29,12 +29,17 @@
 using stringstream = std::stringstream;
 
 #ifndef _MSC_VER
-#include <time.h>
 #define localtime_s(tm, time) localtime_r(time, tm)
 #define gmtime_s(tm, time) gmtime_r(time, tm)
 #endif
 
 namespace sf {
+    Date::Date()
+    {
+        auto time = std::time(NULL);
+        localtime_s(&mTime, &time);
+    }
+
     Date::Date(Date&& date)
     {
         mTime = std::move(date.mTime);
