@@ -23,6 +23,7 @@
 #include "Numeric.h"
 #include <cstdio>
 #include <cstring>
+#include <limits>
 #include <exception>
 
 #define BUFFER_SIZE 64
@@ -311,14 +312,26 @@ namespace sf {
 
     bool tryParse(const String& value, signed char& result, IntegerBase base)
     {
+        bool success = false;
+        short tmpResult = 0;
+
         switch (base) {
             case Decimal:
-                return (sscanf(value.toAnsiString().c_str(), ("%hhd"), &result) == 1);
+                success = (sscanf(value.toAnsiString().c_str(), ("%hd"), &tmpResult) == 1);
+                break;
             case Hexadecimal:
-                return (sscanf(value.toAnsiString().c_str(), ("%hhx"), &result) == 1);
+                success = (sscanf(value.toAnsiString().c_str(), ("%hx"), &tmpResult) == 1);
+                break;
             case Octal:
-                return (sscanf(value.toAnsiString().c_str(), ("%hho"), &result) == 1);
+                success = (sscanf(value.toAnsiString().c_str(), ("%ho"), &tmpResult) == 1);
+                break;
         }
+
+        if (success && tmpResult >= std::numeric_limits<signed char>::min() && tmpResult <= std::numeric_limits<signed char>::max()) {
+            result = (signed char)tmpResult;
+            return true;
+        }
+
         return false;
     }
 
@@ -376,14 +389,26 @@ namespace sf {
 
     bool tryParse(const String& value, unsigned char& result, IntegerBase base)
     {
+        bool success = false;
+        unsigned short tmpResult = 0;
+
         switch (base) {
             case Decimal:
-                return (sscanf(value.toAnsiString().c_str(), ("%hhu"), &result) == 1);
+                success = (sscanf(value.toAnsiString().c_str(), ("%hu"), &tmpResult) == 1);
+                break;
             case Hexadecimal:
-                return (sscanf(value.toAnsiString().c_str(), ("%hhx"), &result) == 1);
+                success = (sscanf(value.toAnsiString().c_str(), ("%hx"), &tmpResult) == 1);
+                break;
             case Octal:
-                return (sscanf(value.toAnsiString().c_str(), ("%hho"), &result) == 1);
+                success = (sscanf(value.toAnsiString().c_str(), ("%ho"), &tmpResult) == 1);
+                break;
         }
+
+        if (success && tmpResult >= std::numeric_limits<unsigned char>::min() && tmpResult <= std::numeric_limits<unsigned char>::max()) {
+            result = (unsigned char)tmpResult;
+            return true;
+        }
+
         return false;
     }
 
@@ -444,7 +469,7 @@ namespace sf {
         signed char result = 0;
 
         if (!tryParse(value, result, base)) {
-            return std::numeric_limits<signed char>::quiet_NaN();
+            throw std::invalid_argument("value");
         }
 
         return result;
@@ -455,7 +480,7 @@ namespace sf {
         short result = 0;
 
         if (!tryParse(value, result, base)) {
-            return std::numeric_limits<short>::quiet_NaN();
+            throw std::invalid_argument("value");
         }
 
         return result;
@@ -466,7 +491,7 @@ namespace sf {
         int result = 0;
 
         if (!tryParse(value, result, base)) {
-            return std::numeric_limits<int>::quiet_NaN();
+            throw std::invalid_argument("value");
         }
 
         return result;
@@ -477,7 +502,7 @@ namespace sf {
         long result = 0;
 
         if (!tryParse(value, result, base)) {
-            return std::numeric_limits<long>::quiet_NaN();
+            throw std::invalid_argument("value");
         }
 
         return result;
@@ -488,7 +513,7 @@ namespace sf {
         long long result = 0;
 
         if (!tryParse(value, result, base)) {
-            return std::numeric_limits<long long>::quiet_NaN();
+            throw std::invalid_argument("value");
         }
 
         return result;
@@ -499,7 +524,7 @@ namespace sf {
         unsigned char result = 0;
 
         if (!tryParse(value, result, base)) {
-            return std::numeric_limits<unsigned char>::quiet_NaN();
+            throw std::invalid_argument("value");
         }
 
         return result;
@@ -510,7 +535,7 @@ namespace sf {
         unsigned short result = 0;
 
         if (!tryParse(value, result, base)) {
-            return std::numeric_limits<unsigned short>::quiet_NaN();
+            throw std::invalid_argument("value");
         }
 
         return result;
@@ -521,7 +546,7 @@ namespace sf {
         unsigned int result = 0;
 
         if (!tryParse(value, result, base)) {
-            return std::numeric_limits<unsigned int>::quiet_NaN();
+            throw std::invalid_argument("value");
         }
 
         return result;
@@ -532,7 +557,7 @@ namespace sf {
         unsigned long result = 0;
 
         if (!tryParse(value, result, base)) {
-            return std::numeric_limits<unsigned long>::quiet_NaN();
+            throw std::invalid_argument("value");
         }
 
         return result;
@@ -543,7 +568,7 @@ namespace sf {
         unsigned long long result = 0;
 
         if (!tryParse(value, result, base)) {
-            return std::numeric_limits<unsigned long long>::quiet_NaN();
+            throw std::invalid_argument("value");
         }
 
         return result;

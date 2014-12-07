@@ -90,7 +90,7 @@ namespace sf {
         mTime.tm_hour = hour;
         mTime.tm_min = minute;
         mTime.tm_sec = second;
-        mktime(&mTime);
+        if (mktime(&mTime) == -1) throw std::range_error("Invalid date.");
     }
 
     Date::Date(std::tm&& value)

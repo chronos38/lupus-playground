@@ -56,7 +56,6 @@ namespace sf {
         Date(const Date&) = default;
         Date(Date&&);
         Date(Int64 ticks);
-        Date(const String& dateString);
         Date(Int32 year, Int32 month, Int32 day);
         Date(Int32 year, Int32 month, Int32 day, DateKind kind);
         Date(Int32 year, Int32 month, Int32 day, Int32 hour, Int32 minute, Int32 second);

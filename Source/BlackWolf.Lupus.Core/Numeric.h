@@ -28,6 +28,7 @@
 
 #include "Configuration.h"
 #include <SFML/System/String.hpp>
+#include <cmath>
 
 namespace sf {
 	//! Base for integer conversion.
@@ -130,7 +131,7 @@ namespace sf {
     LUPUS_CORE_API short parseShort(const String& value, IntegerBase base = Decimal);
     /*!
      * Parse given string value and return it as an integer. If the string is not
-     * a valid integer, this method returns NaN.
+     * a valid integer, this method throws std::invalid_argument.
      *
      * \param[in] value String value to parse.
      * \param[in] base Base for conversion.
