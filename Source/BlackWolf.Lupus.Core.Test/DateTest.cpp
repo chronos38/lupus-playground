@@ -8,28 +8,29 @@ using namespace sf;
 #define gmtime_s(tm, time) gmtime_r(time, tm)
 #endif
 
-TEST(Date, ConstructorTicks)
+TEST(Date, constructorTicks)
 {
     // Arrange
     auto time = std::time(NULL);
     auto date = Date(time);
+    std::tm tm;
 
     // Act
-    auto tm = localtime(&time);
+    localtime_s(&tm, &time);
 
     // Assert
-    ASSERT_EQ(date.getYear(), tm->tm_year + 1900);
-    ASSERT_EQ(date.getMonth(), tm->tm_mon + 1);
-    ASSERT_EQ(date.getDay(), tm->tm_mday);
-    ASSERT_EQ(date.getHour(), tm->tm_hour);
-    ASSERT_EQ(date.getMinute(), tm->tm_min);
-    ASSERT_EQ(date.getSecond(), tm->tm_sec);
+    ASSERT_EQ(date.getYear(), tm.tm_year + 1900);
+    ASSERT_EQ(date.getMonth(), tm.tm_mon + 1);
+    ASSERT_EQ(date.getDay(), tm.tm_mday);
+    ASSERT_EQ(date.getHour(), tm.tm_hour);
+    ASSERT_EQ(date.getMinute(), tm.tm_min);
+    ASSERT_EQ(date.getSecond(), tm.tm_sec);
 
-    ASSERT_EQ(date.getDayOfWeek(), tm->tm_wday);
-    ASSERT_EQ(date.getDayOfYear(), tm->tm_yday);
+    ASSERT_EQ(date.getDayOfWeek(), tm.tm_wday);
+    ASSERT_EQ(date.getDayOfYear(), tm.tm_yday);
 }
 
-TEST(Date, ConstructorIntegerUnspecified)
+TEST(Date, constructorIntegerUnspecified)
 {
     // Arrange
     auto date = Date(2000, 1, 1, 1, 1, 1, DateKind::Unspecified);
@@ -45,7 +46,7 @@ TEST(Date, ConstructorIntegerUnspecified)
     ASSERT_EQ(date.getSecond(), 1);
 }
 
-TEST(Date, ConstructorIntegerLocal)
+TEST(Date, constructorIntegerLocal)
 {
     // Arrange
     auto date = Date(2000, 1, 1, 1, 1, 1, DateKind::Local);
@@ -61,7 +62,7 @@ TEST(Date, ConstructorIntegerLocal)
     ASSERT_EQ(date.getSecond(), 1);
 }
 
-TEST(Date, ConstructorIntegerUtc)
+TEST(Date, constructorIntegerUtc)
 {
     // Arrange
     auto date = Date(2000, 1, 1, 1, 1, 1, DateKind::Utc);
@@ -77,28 +78,28 @@ TEST(Date, ConstructorIntegerUtc)
     ASSERT_EQ(date.getSecond(), 1);
 }
 
-TEST(Date, ConstructorInvalidZero)
+TEST(Date, constructorInvalidZero)
 {
     EXPECT_THROW({
         auto date = Date(0, 0, 0, 0, 0, 0, DateKind::Unspecified);
     }, std::range_error);
 }
 
-TEST(Date, ConstructorInvalidMax)
+TEST(Date, constructorInvalidMax)
 {
     EXPECT_THROW({
         auto date = Date(std::numeric_limits<Int32>::max(), 0, 0, 0, 0, 0, DateKind::Unspecified);
     }, std::range_error);
 }
 
-TEST(Date, ConstructorInvalidMin)
+TEST(Date, constructorInvalidMin)
 {
     EXPECT_THROW({
         auto date = Date(std::numeric_limits<Int32>::min(), 0, 0, 0, 0, 0, DateKind::Unspecified);
     }, std::range_error);
 }
 
-TEST(Date, ConstructorVarious)
+TEST(Date, constructorVarious)
 {
     EXPECT_NO_THROW({
         Date(2000, 1, 1);
@@ -111,7 +112,7 @@ TEST(Date, ConstructorVarious)
     });
 }
 
-TEST(Date, GetterSetterInRange)
+TEST(Date, getterSetterInRange)
 {
     // Arrange
     Date date;
@@ -133,7 +134,7 @@ TEST(Date, GetterSetterInRange)
     ASSERT_EQ(59, date.getSecond());
 }
 
-TEST(Date, GetterSetterOutOfRange)
+TEST(Date, getterSetterOutOfRange)
 {
     // Arrange
     auto date = Date(2000, 12, 31, 23, 59, 59, DateKind::Unspecified);
@@ -258,7 +259,7 @@ TEST(Date, addSeconds)
     auto date = Date(2000, 12, 31, 0, 0, 0, DateKind::Unspecified);
 
     // Act
-    auto result = date.addSeconds(2.5);
+    auto result = date.addSeconds(2);
 
     // Assert
     ASSERT_EQ(2000, result.getYear());
@@ -267,4 +268,98 @@ TEST(Date, addSeconds)
     ASSERT_EQ(0, result.getHour());
     ASSERT_EQ(0, result.getMinute());
     ASSERT_EQ(2, result.getSecond());
+}
+
+TEST(Date, subtractTime)
+{
+    // Arrange
+    auto date = Date(2001, 1, 1, 0, 0, 0, DateKind::Unspecified);
+
+    // Act
+    auto result = date.subtract(seconds(1));
+
+    // Assert
+    ASSERT_EQ(2000, result.getYear());
+    ASSERT_EQ(12, result.getMonth());
+    ASSERT_EQ(31, result.getDay());
+    ASSERT_EQ(23, result.getHour());
+    ASSERT_EQ(59, result.getMinute());
+    ASSERT_EQ(59, result.getSecond());
+}
+
+TEST(Date, subtractDatePositive)
+{
+    // Arrange
+    auto date = Date(2001, 1, 1, 0, 0, 10, DateKind::Unspecified);
+
+    // Act
+    auto result = date.subtract(Date(2001, 1, 1, 0, 0, 0, DateKind::Unspecified));
+
+    // Assert
+    ASSERT_EQ(10.f, result.asSeconds());
+}
+
+TEST(Date, subtractDateNegative)
+{
+    // Arrange
+    auto date = Date(2001, 1, 1, 0, 0, 0, DateKind::Unspecified);
+
+    // Act
+    auto result = date.subtract(Date(2001, 1, 1, 0, 0, 10, DateKind::Unspecified));
+
+    // Assert
+    ASSERT_EQ(-10.f, result.asSeconds());
+}
+
+TEST(Date, variousOperators)
+{
+    // Arrange
+    auto date = Date(2000, 1, 1, 0, 0, 0, DateKind::Unspecified);
+    auto dplus = date;
+    auto dminus = date;
+
+    // Act
+    dplus += seconds(1);
+    dminus -= seconds(1);
+
+    // Assert
+    ASSERT_EQ(Date(2000, 1, 1, 0, 0, 1, DateKind::Unspecified), dplus);
+    ASSERT_EQ(Date(1999, 12, 31, 23, 59, 59, DateKind::Unspecified), dminus);
+    ASSERT_EQ(Date(2000, 1, 1, 0, 0, 0, DateKind::Unspecified), date);
+    ASSERT_NE(Date(2001, 1, 1, 0, 0, 0, DateKind::Unspecified), date);
+    ASSERT_GT(Date(2001, 1, 1, 0, 0, 0, DateKind::Unspecified), date);
+    ASSERT_GE(Date(2001, 1, 1, 0, 0, 0, DateKind::Unspecified), date);
+    ASSERT_GE(Date(2000, 1, 1, 0, 0, 0, DateKind::Unspecified), date);
+    ASSERT_LT(Date(1999, 1, 1, 0, 0, 0, DateKind::Unspecified), date);
+    ASSERT_LE(Date(1999, 1, 1, 0, 0, 0, DateKind::Unspecified), date);
+    ASSERT_LE(Date(2000, 1, 1, 0, 0, 0, DateKind::Unspecified), date);
+    ASSERT_EQ(Date(2000, 1, 1, 0, 0, 1, DateKind::Unspecified), date + seconds(1));
+    ASSERT_EQ(Date(1999, 12, 31, 23, 59, 59, DateKind::Unspecified), date - seconds(1));
+    ASSERT_EQ(1.f, (date - Date(1999, 12, 31, 23, 59, 59, DateKind::Unspecified)).asSeconds());
+    ASSERT_EQ(-1.f, (date - Date(2000, 1, 1, 0, 0, 1, DateKind::Unspecified)).asSeconds());
+}
+
+TEST(Date, toString)
+{
+    // Arrange
+    auto date = Date(2000, 1, 1, 0, 0, 0, DateKind::Unspecified);
+
+    // Act
+    auto string = date.toString();
+    auto ansi = string.toAnsiString();
+
+    // Assert
+    ASSERT_FALSE(string.isEmpty());
+}
+
+TEST(Date, toStringFormat)
+{
+    // Arrange
+    auto date = Date(2000, 1, 1, 0, 0, 0, DateKind::Unspecified);
+
+    // Act
+    auto string = date.toString("%F %T");
+
+    // Assert
+    ASSERT_EQ("2000-01-01 00:00:00", string);
 }

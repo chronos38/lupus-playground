@@ -26,7 +26,7 @@
 #include <chrono>
 #include <cmath>
 
-using stringstream = std::stringstream;
+using stringstream = std::wstringstream;
 
 #ifndef _MSC_VER
 #define localtime_s(tm, time) localtime_r(time, tm)
@@ -255,9 +255,9 @@ namespace sf {
         return addHours(value / 60);
     }
     
-    Date Date::addSeconds(double value) const
+    Date Date::addSeconds(Int32 value) const
     {
-        return addMinutes(value / 60);
+        return addMinutes(value / 60.);
     }
     
     Date Date::subtract(const Time& value) const
@@ -315,11 +315,6 @@ namespace sf {
         return Date(std::move(result));
     }
 
-    Time Date::operator+(const Date& date) const
-    {
-        return seconds((float)std::difftime(mktime(&mTime), (-1) * mktime(&date.mTime)));
-    }
-
     Date Date::operator-(const Time& time) const
     {
         auto result = mTime;
@@ -332,17 +327,33 @@ namespace sf {
         return seconds((float)std::difftime(mktime(&mTime), mktime(&date.mTime)));
     }
 
+    Date& Date::operator+=(const Time& value)
+    {
+        return (*this = *this + value);
+    }
+
+    Date& Date::operator-=(const Time& value)
+    {
+        return (*this = *this - value);
+    }
+
     String Date::toString() const
     {
         stringstream ss;
-        ss << std::put_time(&mTime, "%c");
+        ss << std::put_time(&mTime, L"%c");
         return ss.str();
     }
 
-    String Date::toString(const String& format) const
+    String Date::toString(String format) const
     {
+#ifdef _MSC_VER
+        format.replace("%F", "%Y-%m-%d");
+        format.replace("%D", "%m/%d/%y");
+        format.replace("%T", "%H:%M:%S");
+        format.replace("%R", "%H:%M");
+#endif
         stringstream ss;
-        ss << std::put_time(&mTime, format.toAnsiString().c_str());
+        ss << std::put_time(&mTime, format.toWideString().c_str());
         return ss.str();
     }
 

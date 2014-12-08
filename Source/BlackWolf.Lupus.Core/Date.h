@@ -86,7 +86,7 @@ namespace sf {
         Date addDays(double value) const;
         Date addHours(double value) const;
         Date addMinutes(double value) const;
-        Date addSeconds(double value) const;
+        Date addSeconds(Int32 value) const;
         Date subtract(const Time& value) const;
         Time subtract(const Date& value) const;
 
@@ -99,14 +99,13 @@ namespace sf {
         bool operator>(const Date&) const;
         bool operator>=(const Date&) const;
         Date operator+(const Time& value) const;
-        Time operator+(const Date& value) const;
         Date operator-(const Time& value) const;
         Time operator-(const Date& value) const;
         Date& operator+=(const Time& value);
         Date& operator-=(const Time& value);
 
         String toString() const;
-        String toString(const String& format) const;
+        String toString(String format) const;
 
         static Date Now();
         static Date UtcNow();
