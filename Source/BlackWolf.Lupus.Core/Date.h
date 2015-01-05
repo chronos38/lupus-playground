@@ -105,19 +105,19 @@ namespace sf {
         Date& operator-=(const Time& value);
 
         String toString() const;
-        String toString(String format) const;
+        String toString(const String& format) const;
 
-        static Date Now();
-        static Date UtcNow();
+        static Date now();
+        static Date utcNow();
 
     private:
         Date(std::tm&&);
         mutable std::tm mTime;
     };
 
-    LUPUS_CORE_API Date operator+(const Time&, const Date&);
-    LUPUS_CORE_API Date operator-(const Time&, const Date&);
-    LUPUS_CORE_API String toString(const Date&);
+    LUPUS_CORE_API String toString(const Date& date);
+    LUPUS_CORE_API bool tryParse(const String& format, Date& result);
+    LUPUS_CORE_API Date parseDate(const String& format);
 }
 
 #endif

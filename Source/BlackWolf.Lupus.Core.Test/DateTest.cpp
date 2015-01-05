@@ -27,7 +27,7 @@ TEST(Date, constructorTicks)
     ASSERT_EQ(date.getSecond(), tm.tm_sec);
 
     ASSERT_EQ(date.getDayOfWeek(), tm.tm_wday);
-    ASSERT_EQ(date.getDayOfYear(), tm.tm_yday);
+    ASSERT_EQ(date.getDayOfYear(), tm.tm_yday + 1);
 }
 
 TEST(Date, constructorIntegerUnspecified)
@@ -350,6 +350,8 @@ TEST(Date, toString)
 
     // Assert
     ASSERT_FALSE(string.isEmpty());
+    ASSERT_FALSE(toString(date).isEmpty());
+    ASSERT_EQ("2000-01-01T00:00:00", string);
 }
 
 TEST(Date, toStringFormat)
@@ -362,4 +364,111 @@ TEST(Date, toStringFormat)
 
     // Assert
     ASSERT_EQ("2000-01-01 00:00:00", string);
+}
+
+TEST(Date, now)
+{
+    // Arrange
+    auto time = std::time(NULL);
+    auto date = Date::now();
+    std::tm tm;
+
+    // Act
+    localtime_s(&tm, &time);
+
+    // Assert
+    ASSERT_TRUE(tm.tm_year + 1900 == date.getYear());
+    ASSERT_TRUE(tm.tm_mon + 1 == date.getMonth());
+    ASSERT_TRUE(tm.tm_mday == date.getDay());
+}
+
+TEST(Date, utcNow)
+{
+    // Arrange
+    auto time = std::time(NULL);
+    auto date = Date::utcNow();
+    std::tm tm;
+
+    // Act
+    gmtime_s(&tm, &time);
+
+    // Assert
+    ASSERT_TRUE(tm.tm_year + 1900 == date.getYear());
+    ASSERT_TRUE(tm.tm_mon + 1 == date.getMonth());
+    ASSERT_TRUE(tm.tm_mday == date.getDay());
+}
+
+TEST(Date, getDayOfWeek)
+{
+    // Arrange
+    auto date = Date(2000, 1, 1, DateKind::Utc);
+
+    // Act
+    auto day = date.getDayOfWeek();
+
+    // Assert
+    ASSERT_EQ(Saturday, day);
+}
+
+TEST(Date, getDayOfYear)
+{
+    // Arrange
+    auto date = Date(2000, 1, 1, DateKind::Utc);
+
+    // Act
+    auto day = date.getDayOfYear();
+
+    // Assert
+    ASSERT_EQ(1, day);
+}
+
+TEST(Date, getTimeOfDay)
+{
+    // Arrange
+    auto date = Date(2000, 1, 1, 0, 0, 0, DateKind::Utc);
+
+    // Act
+    auto time = date.getTimeOfDay();
+
+    // Assert
+    ASSERT_EQ(seconds(0).asSeconds(), time.asSeconds());
+}
+
+TEST(Date, tryParseValid)
+{
+    // Arrange
+    Date date;
+
+    // Act
+    auto result = tryParse("2000-01-01T12:11:10", date);
+
+    // Assert
+    ASSERT_TRUE(result);
+    ASSERT_EQ(Date(2000, 1, 1, 12, 11, 10), date);
+}
+
+TEST(Date, tryParseInvalid)
+{
+    // Arrange
+    Date date;
+
+    // Act
+    auto result = tryParse("2000-01-01 12:11:10", date);
+
+    // Assert
+    ASSERT_FALSE(result);
+}
+
+TEST(Date, parseDateValid)
+{
+    EXPECT_NO_THROW({
+        ASSERT_EQ(Date(2000, 1, 1, 12, 11, 10), parseDate("2000-01-01T12:11:10"));
+    });
+}
+
+TEST(Date, parseDateInvalid)
+{
+    EXPECT_THROW({
+        parseDate("2000-01-01 12:11:10");
+    }, std::invalid_argument);
 }

@@ -21,12 +21,17 @@
  * THE SOFTWARE.
  */
 #include "Date.h"
+#include "Numeric.h"
 #include <sstream>
 #include <iomanip>
 #include <chrono>
 #include <cmath>
 
-using stringstream = std::wstringstream;
+#if defined(_WIN32) || defined(_WIN64)
+using sstream = std::wstringstream;
+#else
+using sstream = std::stringstream;
+#endif
 
 #ifndef _MSC_VER
 #define localtime_s(tm, time) localtime_r(time, tm)
@@ -202,7 +207,7 @@ namespace sf {
     
     Int32 Date::getDayOfYear() const
     {
-        return mTime.tm_yday;
+        return mTime.tm_yday + 1;
     }
 
     Time Date::getTimeOfDay() const
@@ -339,25 +344,28 @@ namespace sf {
 
     String Date::toString() const
     {
-        stringstream ss;
-        ss << std::put_time(&mTime, L"%c");
-        return ss.str();
+        return toString("%FT%T");
     }
 
-    String Date::toString(String format) const
+    String Date::toString(const String& format) const
     {
-#ifdef _MSC_VER
-        format.replace("%F", "%Y-%m-%d");
-        format.replace("%D", "%m/%d/%y");
-        format.replace("%T", "%H:%M:%S");
-        format.replace("%R", "%H:%M");
-#endif
-        stringstream ss;
-        ss << std::put_time(&mTime, format.toWideString().c_str());
+#if defined(_WIN32) || defined(_WIN64)
+        sstream ss;
+        auto tmp = format;
+        tmp.replace("%F", "%Y-%m-%d");
+        tmp.replace("%D", "%m/%d/%y");
+        tmp.replace("%T", "%H:%M:%S");
+        tmp.replace("%R", "%H:%M");
+        ss << std::put_time(&mTime, tmp.toWideString().c_str());
         return ss.str();
+#else
+        sstream ss;
+        ss << std::put_time(&mTime, format.toAnsiString().c_str());
+        return ss.str();
+#endif
     }
 
-    Date Date::Now()
+    Date Date::now()
     {
         auto time = std::time(NULL);
         Date result;
@@ -365,7 +373,7 @@ namespace sf {
         return result;
     }
 
-    Date Date::UtcNow()
+    Date Date::utcNow()
     {
         auto time = std::time(NULL);
         Date result;
@@ -373,40 +381,53 @@ namespace sf {
         return result;
     }
 
-    Date operator+(const Time& lhs, const Date& rhs)
-    {
-        std::tm result;
-        memset(&result, 0, sizeof(result));
-        result.tm_year = rhs.getYear() - 1900;
-        result.tm_mon = rhs.getMonth() - 1;
-        result.tm_mday = rhs.getDay();
-        result.tm_hour = rhs.getHour();
-        result.tm_min = rhs.getMinute();
-        result.tm_sec = rhs.getSecond();
-        result.tm_isdst = -1;
-
-        result.tm_sec += static_cast<int>(std::floor(lhs.asSeconds()));
-        return Date(mktime(&result));
-    }
-    
-    Date operator-(const Time& lhs, const Date& rhs)
-    {
-        std::tm result;
-        memset(&result, 0, sizeof(result));
-        result.tm_year = rhs.getYear() - 1900;
-        result.tm_mon = rhs.getMonth() - 1;
-        result.tm_mday = rhs.getDay();
-        result.tm_hour = rhs.getHour();
-        result.tm_min = rhs.getMinute();
-        result.tm_sec = rhs.getSecond();
-        result.tm_isdst = -1;
-
-        result.tm_sec -= static_cast<int>(std::floor(lhs.asSeconds()));
-        return Date(mktime(&result));
-    }
-
     String toString(const Date& date)
     {
         return date.toString();
+    }
+
+    bool tryParse(const String& format, Date& result)
+    {
+        auto timeIndex = format.find("T");
+
+        if (timeIndex == format.InvalidPos) {
+            return false;
+        }
+
+        auto datePart = format.substring(0, timeIndex);
+        auto timePart = format.substring(timeIndex + 1);
+        auto year = datePart.substring(0, 4);
+        auto month = datePart.substring(5, 2);
+        auto day = datePart.substring(8, 2);
+        auto hour = timePart.substring(0, 2);
+        auto minute = timePart.substring(3, 2);
+        auto second = timePart.substring(6, 2);
+
+        try {
+            result = Date(parseInt(year), parseInt(month), parseInt(day), parseInt(hour), parseInt(minute), parseInt(second), DateKind::Utc);
+        } catch (std::invalid_argument&) {
+            return false;
+        }
+
+        return true;
+    }
+
+    Date parseDate(const String& format)
+    {
+        auto timeIndex = format.find("T");
+
+        if (timeIndex == format.InvalidPos) {
+            throw std::invalid_argument("format");
+        }
+
+        auto datePart = format.substring(0, timeIndex);
+        auto timePart = format.substring(timeIndex + 1);
+        auto year = datePart.substring(0, 4);
+        auto month = datePart.substring(5, 2);
+        auto day = datePart.substring(8, 2);
+        auto hour = timePart.substring(0, 2);
+        auto minute = timePart.substring(3, 2);
+        auto second = timePart.substring(6, 2);
+        return Date(parseInt(year), parseInt(month), parseInt(day), parseInt(hour), parseInt(minute), parseInt(second), DateKind::Utc);
     }
 }
